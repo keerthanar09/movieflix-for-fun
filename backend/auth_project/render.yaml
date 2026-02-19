@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: movieflix-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn auth_project.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: auth_project.settings
