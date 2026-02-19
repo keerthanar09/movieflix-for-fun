@@ -7,6 +7,6 @@ call npm install
 
 echo.
 echo Frontend setup complete!
-echo To start the development server, run: npm start
+echo To start the development server, run: npm run dev
 echo.
 pause

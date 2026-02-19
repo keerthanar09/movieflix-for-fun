@@ -8,6 +8,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 # Quick-start development settings - unsuitable for production
@@ -132,11 +133,20 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS settings
+# CORS settings - allow localhost and Vercel deployments
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+# Allow Vercel preview and production URLs
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+    r"^https://.*\.vercel\.sh$",
+]
+# Add FRONTEND_URL from env if set (e.g., custom domain)
+_frontend_url = config("FRONTEND_URL", default=None)
+if _frontend_url:
+    CORS_ALLOWED_ORIGINS.append(_frontend_url.rstrip("/"))
 
 CORS_ALLOW_CREDENTIALS = True
 
