@@ -1,6 +1,6 @@
 # Registration and Login App
 
-A full-stack authentication application with Django backend and React frontend, featuring a glassmorphic design with red-black color palette.
+A full-stack authentication application with Django backend and React frontend, featuring a glassmorphic design with red-black color palette. Deployed on **Render** (backend) and **Vercel** (frontend).
 
 ## Features
 
@@ -17,138 +17,94 @@ A full-stack authentication application with Django backend and React frontend, 
 
 ```
 kodnest-project/
-├── backend/          # Django backend
-│   ├── auth_project/    # Django project settings
-│   ├── authentication/   # Authentication app
+├── backend/          # Django backend (Render)
+│   ├── auth_project/
+│   ├── authentication/
 │   ├── manage.py
 │   └── requirements.txt
-├── frontend/        # React frontend
+├── frontend/         # React + Vite frontend (Vercel)
 │   ├── src/
-│   │   ├── components/
-│   │   ├── App.js
-│   │   └── index.js
-│   └── package.json
+│   ├── index.html
+│   ├── vite.config.js
+│   └── vercel.json
 └── README.md
 ```
 
-## Setup Instructions
+## Deployment
 
-### Backend Setup
+### Backend (Render)
 
-1. Navigate to the backend directory:
+1. Create a Web Service on [Render](https://render.com).
+2. Connect your repository and set **Root Directory** to `backend` (if deploying from monorepo) or deploy the backend folder.
+3. Configure environment variables in Render dashboard:
+   - `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `SECRET_KEY`
+   - Optional: `FRONTEND_URL` for custom frontend domain CORS
+4. Build command: `pip install -r requirements.txt`
+5. Start command: `gunicorn auth_project.wsgi:application`
+6. Run migrations via Render Shell: `python manage.py migrate`
+
+### Frontend (Vercel)
+
+1. Create a new project on [Vercel](https://vercel.com).
+2. Import your repository and set **Root Directory** to `frontend`.
+3. Add environment variable:
+   - **Name**: `VITE_API_URL`  
+   - **Value**: Your Render backend URL (e.g., `https://movieflix-backend.onrender.com`)
+4. Vercel will auto-detect Vite and use `npm run build` for build and `dist` for output.
+
+**VITE_API_URL** is used for all API requests (register/login). Without it, the app falls back to `http://localhost:8000` for local development.
+
+## Local Development
+
+### Backend
+
 ```bash
 cd backend
-```
-
-2. Create a virtual environment (recommended):
-```bash
 python -m venv venv
-```
-
-3. Activate the virtual environment:
-   - Windows:
-   ```bash
-   venv\Scripts\activate
-   ```
-   - Linux/Mac:
-   ```bash
-   source venv/bin/activate
-   ```
-
-4. Install dependencies:
-```bash
+venv\Scripts\activate   # Windows
 pip install -r requirements.txt
-```
-
-5. The `.env` file is already configured with your database credentials. Make sure it exists in the `backend` directory.
-
-6. Run migrations to create database tables:
-```bash
-python manage.py makemigrations
+# Create .env with DB credentials
 python manage.py migrate
-```
-
-7. Start the Django development server:
-```bash
 python manage.py runserver
 ```
 
-The backend will run on `http://localhost:8000`
+### Frontend
 
-### Frontend Setup
-
-1. Navigate to the frontend directory:
 ```bash
 cd frontend
-```
-
-2. Install dependencies:
-```bash
 npm install
+# Optional: create .env with VITE_API_URL=http://localhost:8000
+npm run dev
 ```
-
-3. Start the React development server:
-```bash
-npm start
-```
-
-The frontend will run on `http://localhost:3000`
 
 ## API Endpoints
 
-### Register
-- **URL**: `http://localhost:8000/api/register/`
-- **Method**: POST
-- **Body**:
-```json
-{
-  "username": "string",
-  "userid": "string",
-  "email": "string",
-  "phone_number": "string",
-  "password": "string",
-  "confirm_password": "string"
-}
-```
+- **Register**: `POST /api/register/`
+- **Login**: `POST /api/login/`
 
-### Login
-- **URL**: `http://localhost:8000/api/login/`
-- **Method**: POST
-- **Body**:
-```json
-{
-  "username": "string",
-  "password": "string"
-}
-```
+## Environment Variables
 
-## Database Configuration
+### Backend (Render)
 
-The application uses MySQL database hosted on Aiven. Database credentials are stored in the `.env` file:
+| Variable      | Description                          |
+|---------------|--------------------------------------|
+| DB_HOST       | MySQL host (Aiven)                   |
+| DB_PORT       | MySQL port                           |
+| DB_NAME       | Database name                        |
+| DB_USER       | Database user                        |
+| DB_PASSWORD   | Database password                    |
+| SECRET_KEY    | Django secret key                    |
+| FRONTEND_URL  | Optional: frontend URL for CORS      |
 
-- Host: mysql-1b3d95de-keerthana241495-bc79.b.aivencloud.com
-- Port: 22280
-- Database: defaultdb
-- SSL Mode: REQUIRED
+### Frontend (Vercel)
 
-## Security Features
-
-- Passwords are hashed using Django's password hashing system
-- Prepared statements are used through Django ORM (prevents SQL injection)
-- SSL connection to database
-- CORS configured for frontend-backend communication
-
-## Design
-
-The application features a glassmorphic design with:
-- Red-black color palette (#dc143c, #8b0000, #1a0000)
-- Glassmorphic cards with backdrop blur effects
-- Animated geometric shapes in the background
-- Smooth transitions and hover effects
+| Variable      | Description                          |
+|---------------|--------------------------------------|
+| VITE_API_URL  | Backend API base URL (required for production) |
 
 ## Technologies Used
 
-- **Backend**: Django 4.2.7, Django REST Framework
-- **Frontend**: React 18.2.0, React Router DOM
+- **Backend**: Django, DRF, PyMySQL, Gunicorn
+- **Frontend**: React, Vite, React Router, Axios
 - **Database**: MySQL (Aiven)
-- **HTTP Client**: Axios
+- **Hosting**: Render, Vercel
