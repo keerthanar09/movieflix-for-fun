@@ -1,0 +1,112 @@
+.App {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background with geometric shapes */
+.App::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a0000 50%, #0a0a0a 100%);
+  z-index: -2;
+}
+
+.App::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(220, 20, 60, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139, 0, 0, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(178, 34, 34, 0.1) 0%, transparent 50%);
+  z-index: -1;
+  animation: pulse 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Geometric shapes */
+.geometric-shape {
+  position: fixed;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(45deg, #dc143c, #8b0000);
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  top: -100px;
+  left: -100px;
+  animation: float1 20s ease-in-out infinite;
+  filter: blur(40px);
+}
+
+.shape-2 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #8b0000, #dc143c);
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  bottom: -150px;
+  right: -150px;
+  animation: float2 25s ease-in-out infinite;
+  filter: blur(50px);
+}
+
+.shape-3 {
+  width: 250px;
+  height: 250px;
+  background: linear-gradient(225deg, #dc143c, #1a0000);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  top: 50%;
+  right: 10%;
+  animation: float3 15s ease-in-out infinite;
+  filter: blur(35px);
+}
+
+@keyframes float1 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(50px, 50px) rotate(120deg);
+  }
+  66% {
+    transform: translate(-30px, 80px) rotate(240deg);
+  }
+}
+
+@keyframes float2 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-80px, -50px) rotate(180deg);
+  }
+}
+
+@keyframes float3 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(30px, -40px) rotate(-90deg);
+  }
+}
